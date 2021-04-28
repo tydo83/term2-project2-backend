@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const User = require('../Model/User');
+const mongoDBErrorHelper = require('../../lib/mongoDBErrorHelper')
 
 module.exports = {
     signUp: async (req, res) => {
@@ -22,7 +23,7 @@ module.exports = {
                 data: savedUser,
             })
         } catch (e) {
-            res.status(500).json("error")
+            res.status(500).json(mongoDBErrorHelper(e))
         }
     },
     login: async (req, res) => {
@@ -48,7 +49,7 @@ module.exports = {
                 })
             }
         } catch (err) {
-            res.status(500).json('error')
+            res.status(500).json(mongoDBErrorHelper(e))
         }
     },
     updateUserPassword: async (req, res) => {
@@ -79,7 +80,7 @@ module.exports = {
                 payload: true
             })
         } catch (e) {
-            res.status(500).json("Error")
+            res.status(500).json(mongoDBErrorHelper(e))
         }
     },
 }
