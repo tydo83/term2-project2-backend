@@ -37,7 +37,7 @@ module.exports = {
                 foundUser.password,
             )
             if (!comparedPassword) {
-                throw { message: "Check your email and password!" }
+                throw { message: "Check your username and password!" }
             } else {
                 let jwtToken = jwt.sign(
                     { email: foundUser.userName },
