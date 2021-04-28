@@ -18,7 +18,7 @@ const checkIfEmail = (target) => {
 };
 
 const checkForSymbol = (target) => {
-    if (matches(target, /[!@#$%^&*()\[\],.?":;{}|<>]/g)) {
+    if (matches(target, /[!@#$%^&*()\[\],.?":;{}|<>0-9]/g)) {
         return true;
     } else {
         return false;
@@ -64,10 +64,10 @@ const checkForSymbolMiddleware = (req, res, next) => {
     let { firstName, lastName } = req.body;
 
     if (checkForSymbol(firstName)) {
-        errObj.firstName = "First Name cannot contain special characters"
+        errObj.firstName = "First Name cannot contain any numbers or special characters"
     }
     if (checkForSymbol(lastName)) {
-        errObj.lastName = "Last Name cannot contain special characters"
+        errObj.lastName = "Last Name cannot contain any numbers or special characters"
     }
     if (Object.keys(errObj).length > 0) {
         res.status(500).json(mongoDBErrorHelper({ message: errObj }))
@@ -79,9 +79,9 @@ const checkForSymbolMiddleware = (req, res, next) => {
 const checkLoginIsEmpty = (req, res, next) => {
     let errObj = {};
 
-    const { email, password } = req.body;
+    const { userName, password } = req.body;
 
-    if (checkIfEmpty(email)) {
+    if (checkIfEmpty(userName)) {
         errObj.userName = "Username cannot be empty";
     }
     if (checkIfEmpty(password)) {

@@ -12,6 +12,6 @@ router.get('/', function(req, res, next) {
 
 router.post('/sign-up', checkIfEmptyMiddleware, checkForSymbolMiddleware, signUp)
 router.post('/login', checkLoginIsEmpty, login)
-router.post('/update-password', checkIsUserHaveValidToken, updateUserPassword)
+router.put('/update-password', checkIsUserHaveValidToken, updateUserPassword)
 
 module.exports = router;

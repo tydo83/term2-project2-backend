@@ -7,7 +7,7 @@ const mongoDBErrorHelper = require('../../lib/mongoDBErrorHelper')
 module.exports = {
     signUp: async (req, res) => {
         try {
-            let salted = await bcrypt.getSalt(10);
+            let salted = await bcrypt.genSalt(10);
             let hashedPassword = await bcrypt.hash(req.body.password, salted)
 
             let createdUser = await new User({
@@ -49,12 +49,13 @@ module.exports = {
                 })
             }
         } catch (err) {
-            res.status(500).json(mongoDBErrorHelper(e))
+            console.log(err);
+            res.status(500).json(mongoDBErrorHelper(err))
         }
     },
     updateUserPassword: async (req, res) => {
         try {
-            let foundUser = User.findOne({ userName: req.body.userName });
+            let foundUser = await User.findOne({ userName: req.body.userName });
             if (!foundUser) {
                 throw { message: "User not found!!" }
             }
