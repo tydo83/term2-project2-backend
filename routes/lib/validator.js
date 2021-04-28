@@ -29,13 +29,16 @@ const checkIfEmptyMiddleware = (req, res, next) => {
     let errObj = {};
     let checkedEmail = false;
 
-    const { email, password, firstName, lastName } = req.body;
+    const { email, password, userName, firstName, lastName } = req.body;
 
     if (checkIfEmpty(firstName)) {
         errObj.firstName = "First Name cannot be empty";
     }
     if (checkIfEmpty(lastName)) {
         errObj.lastName = "Last Name cannot be empty";
+    }
+    if (checkIfEmpty(userName)) {
+        errObj.userName = "Username cannot be empty";
     }
     if (checkIfEmpty(email)) {
         errObj.email = "Email cannot be empty";
@@ -90,7 +93,6 @@ const checkLoginIsEmpty = (req, res, next) => {
         next();
     }
 }
-
 
 module.exports = {
     checkIfEmptyMiddleware,
