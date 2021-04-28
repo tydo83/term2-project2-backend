@@ -12,6 +12,7 @@ module.exports = {
             let createdUser = await new User({
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
+                userName: req.body.userName,
                 email: req.body.email,
                 password: hashedPassword,
             })
@@ -26,9 +27,9 @@ module.exports = {
     },
     login: async (req, res) => {
         try {
-            let foundUser = await User.findOne({ email: req.body.email })
+            let foundUser = await User.findOne({ userName: req.body.userName })
             if (!foundUser) {
-                throw { message: "Email is not registered, please go sign up!" }
+                throw { message: "User is not registered, please go sign up!" }
             }
             let comparedPassword = await bcrypt.compare(
                 req.body.password,
@@ -38,7 +39,7 @@ module.exports = {
                 throw { message: "Check your email and password!" }
             } else {
                 let jwtToken = jwt.sign(
-                    { email: foundUser.email },
+                    { email: foundUser.userName },
                     process.env.JWT_SECRET,
                     { expiresIn: "1hr" }
                 )
@@ -52,7 +53,7 @@ module.exports = {
     },
     updateUserPassword: async (req, res) => {
         try {
-            let foundUser = User.findOne({ email: req.body.email });
+            let foundUser = User.findOne({ userName: req.body.userName });
             if (!foundUser) {
                 throw { message: "User not found!!" }
             }
@@ -62,14 +63,14 @@ module.exports = {
                 foundUser.password,
             )
             if (!comparedPassword) {
-                throw { message: "Cannot update your password, please check again" }
+                throw { message: "Cannot update password, please check again" }
             }
 
             let salted = await bcrypt.genSalt(10);
             let hashedNewPassword = await bcrypt.hash(req.body.newPassword, salted)
 
             let updatedUser = await User.findOneAndUpdate(
-                { email: req.body.email },
+                { userName: req.body.userName },
                 { password: hashedNewPassword },
                 { new: true }
             )
