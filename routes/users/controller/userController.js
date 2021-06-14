@@ -40,7 +40,7 @@ module.exports = {
                 throw { message: "Check your username and password!" }
             } else {
                 let jwtToken = jwt.sign(
-                    { email: foundUser.userName },
+                    { username: foundUser.userName },
                     process.env.JWT_SECRET,
                     { expiresIn: "1hr" }
                 )
